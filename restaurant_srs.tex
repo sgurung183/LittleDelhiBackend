@@ -1,0 +1,250 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{enumitem}
+
+% Colors
+\definecolor{darkblue}{HTML}{1a1a2e}
+\definecolor{lightgray}{HTML}{e8e8f0}
+\definecolor{midgray}{HTML}{555555}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textcolor{midgray}{\small Restaurant App --- SRS v1.0}}
+\lhead{\textcolor{midgray}{\small May 2026}}
+\rfoot{\textcolor{midgray}{\small Page \thepage}}
+
+% Section styling
+\titleformat{\section}{\large\bfseries\color{darkblue}}{{\color{darkblue}\thesection}}{1em}{}[\color{darkblue}\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{darkblue}}{\thesubsection}{1em}{}
+
+% Table row color helper
+\newcommand{\headerrow}{\rowcolor{darkblue}\color{white}\bfseries}
+
+\begin{document}
+
+% ── TITLE PAGE ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{1.5in}
+    {\huge\bfseries\color{darkblue} Software Requirements Specification\\[0.4em]}
+    {\Large Restaurant Management Application\\[2em]}
+    \textcolor{darkblue}{\rule{0.8\linewidth}{1.5pt}}\\[2em]
+    \begin{tabular}{ll}
+        \textbf{Version}   & 1.0 \\[0.5em]
+        \textbf{Platform}  & Web Application \\[0.5em]
+        \textbf{Backend}   & Java Spring Boot \\[0.5em]
+        \textbf{Date}      & May 2026 \\[0.5em]
+        \textbf{Status}    & Draft \\
+    \end{tabular}
+    \vfill
+    \textcolor{midgray}{\small Restaurant Management App --- Confidential}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% ── 1. INTRODUCTION ─────────────────────────────────────────────────────────
+\section{Introduction}
+
+\subsection{Purpose}
+This document specifies the functional requirements for a web-based Restaurant Management
+Application. It serves as the reference for development, describing what the system must do
+from the perspective of its two user roles: Admin and Employee (Staff).
+
+\subsection{Scope}
+The application will allow a restaurant owner (Admin) to manage staff accounts, recipes,
+menu items, and inventory, while giving employees the ability to clock in/out and view
+relevant information. The system is a web application built with a Java Spring Boot backend
+and a relational database.
+
+\subsection{Definitions}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2cm} X}
+\toprule
+\headerrow Term & Definition \\
+\midrule
+\rowcolor{lightgray} Admin       & The restaurant owner or manager. Has full access to the system. \\
+Employee    & A staff member. Has limited, read/clock access. \\
+\rowcolor{lightgray} Ingredient  & A raw material used in recipes (e.g.\ eggs, chicken). \\
+Inventory   & Tracks the current stock quantity of each ingredient. \\
+\rowcolor{lightgray} Recipe      & A named set of ingredients with quantities and a preparation procedure. \\
+Item        & A menu item sold to customers. Linked to a Recipe and has a price. \\
+\rowcolor{lightgray} TimeSheet   & A record of an employee clock-in and clock-out for a given day. \\
+Threshold   & A minimum stock level for an ingredient. Triggers a low-stock alert when crossed. \\
+\bottomrule
+\end{tabularx}
+
+\newpage
+
+% ── 2. OVERALL DESCRIPTION ──────────────────────────────────────────────────
+\section{Overall Description}
+
+\subsection{System Overview}
+The Restaurant Management Application is a role-based web system. Upon login, users are
+directed to a dashboard appropriate to their role. The Admin dashboard provides full
+management capabilities. The Employee dashboard provides limited operational access.
+
+\subsection{User Roles}
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.5cm} X}
+\toprule
+\headerrow Role & Description \\
+\midrule
+\rowcolor{lightgray} Admin    & Full access: manage staff, recipes, inventory, items, and view reports. \\
+Employee & Limited access: clock in/out, view assigned recipes, view inventory levels. \\
+\bottomrule
+\end{tabularx}
+
+\newpage
+
+% ── 3. FUNCTIONAL REQUIREMENTS ──────────────────────────────────────────────
+\section{Functional Requirements}
+
+\subsection{Authentication}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-AU-01 & The system shall allow any user to log in using a username and password. \\
+FR-AU-02 & The system shall reject login attempts with invalid credentials and display an error message. \\
+\rowcolor{lightgray} FR-AU-03 & The system shall assign a role (ADMIN or EMPLOYEE) to each user account. \\
+FR-AU-04 & The system shall restrict access to features based on the user role. \\
+\rowcolor{lightgray} FR-AU-05 & The system shall allow users to log out and terminate their session. \\
+\bottomrule
+\end{longtable}
+
+\subsection{User and Staff Management}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-US-01 & The Admin shall be able to create new Employee accounts with a name, username, and password. \\
+FR-US-02 & The Admin shall be able to view a list of all Employee accounts. \\
+\rowcolor{lightgray} FR-US-03 & The Admin shall be able to deactivate or delete an Employee account. \\
+FR-US-04 & The Admin shall be able to reset an Employee password. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Ingredient Management}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-IG-01 & The Admin shall be able to create a new ingredient with a name, cost price, and unit of measurement. \\
+FR-IG-02 & The Admin shall be able to view a list of all ingredients. \\
+\rowcolor{lightgray} FR-IG-03 & The Admin shall be able to edit an ingredient name, cost price, or unit. \\
+FR-IG-04 & The Admin shall be able to delete an ingredient not currently used in any recipe. \\
+\rowcolor{lightgray} FR-IG-05 & Units of measurement shall be one of: PIECES, GRAMS, KILOGRAMS, LITERS, MILLILITERS, OUNCES. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Inventory Management}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-IN-01 & The system shall maintain an inventory record for each ingredient, tracking current quantity. \\
+FR-IN-02 & The Admin shall be able to update the quantity of any ingredient in inventory. \\
+\rowcolor{lightgray} FR-IN-03 & The Admin shall be able to set a low-stock threshold for each ingredient. \\
+FR-IN-04 & The system shall flag an ingredient as low-stock when its quantity falls at or below its threshold. \\
+\rowcolor{lightgray} FR-IN-05 & The Admin shall receive an in-app notification when an ingredient is flagged as low-stock. \\
+FR-IN-06 & The Employee shall be able to view the current inventory list (read-only). \\
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\subsection{Recipe Management}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-RC-01 & The Admin shall be able to create a new recipe with a name, preparation procedure, and a list of ingredients with required quantities. \\
+FR-RC-02 & The Admin shall be able to view all recipes. \\
+\rowcolor{lightgray} FR-RC-03 & The Admin shall be able to edit a recipe name, procedure, or ingredient quantities. \\
+FR-RC-04 & The Admin shall be able to delete a recipe not currently linked to a menu item. \\
+\rowcolor{lightgray} FR-RC-05 & Each ingredient in a recipe shall specify a quantity. The unit is inherited from the ingredient definition. \\
+FR-RC-06 & The Employee shall be able to view recipes (read-only). \\
+\bottomrule
+\end{longtable}
+
+\subsection{Menu Item Management}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-IT-01 & The Admin shall be able to create a menu item with a name, price, and linked recipe. \\
+FR-IT-02 & The Admin shall be able to view all menu items. \\
+\rowcolor{lightgray} FR-IT-03 & The Admin shall be able to edit a menu item name, price, or linked recipe. \\
+FR-IT-04 & The Admin shall be able to delete a menu item. \\
+\bottomrule
+\end{longtable}
+
+\subsection{Time Sheet and Clock In/Out}
+
+\begin{longtable}{>{\bfseries}p{2cm} p{11cm}}
+\toprule
+\headerrow ID & Requirement \\
+\midrule
+\endhead
+\rowcolor{lightgray} FR-TS-01 & The Employee shall be able to clock in, recording the current date and time. \\
+FR-TS-02 & The Employee shall be able to clock out, recording the current time. \\
+\rowcolor{lightgray} FR-TS-03 & The system shall calculate and store the hours worked when the Employee clocks out (clock-out minus clock-in). \\
+FR-TS-04 & The Admin shall be able to view the timesheet records of all employees. \\
+\rowcolor{lightgray} FR-TS-05 & The Admin shall be able to view a biweekly hours summary per employee (sum of hours in a 2-week period). \\
+FR-TS-06 & The Employee shall be able to view their own timesheet history. \\
+\bottomrule
+\end{longtable}
+
+\newpage
+
+% ── 4. DATA MODEL SUMMARY ───────────────────────────────────────────────────
+\section{Data Model Summary}
+
+The following table summarizes the core entities and their key fields.
+
+\begin{tabularx}{\textwidth}{>{\bfseries}p{2.5cm} X}
+\toprule
+\headerrow Entity & Key Fields \\
+\midrule
+\rowcolor{lightgray} User        & id, name, username, password (hashed), role (ADMIN / EMPLOYEE) \\
+Ingredient  & id, name, costPrice, unit (Enum) \\
+\rowcolor{lightgray} Inventory   & id, ingredient (FK), qty, threshold \\
+Recipe      & id, name, ingredients (Map: Ingredient $\rightarrow$ qty), procedure \\
+\rowcolor{lightgray} Item        & id, name, price, recipe (FK) \\
+TimeSheet   & id, user (FK), date, clockIn, clockOut, hours \\
+\bottomrule
+\end{tabularx}
+
+\vspace{1em}
+\textcolor{midgray}{\small Note: Fields marked FK are stored as foreign key IDs in the database.
+Spring Data JPA maps them to full Java objects at the application layer.}
+
+\vfill
+\textcolor{darkblue}{\rule{\linewidth}{1pt}}
+\textcolor{midgray}{\small Restaurant Management App --- SRS v1.0 --- May 2026}
+
+\end{document}
