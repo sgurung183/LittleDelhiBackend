@@ -1,0 +1,7 @@
+package com.LittleDelhi.LittleDelhiBackend.repository;
+
+import com.LittleDelhi.LittleDelhiBackend.model.Recipe;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RecipeRepository extends JpaRepository<Recipe, Long> {
+}

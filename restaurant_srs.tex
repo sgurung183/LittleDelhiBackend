@@ -243,6 +243,82 @@ TimeSheet   & id, user (FK), date, clockIn, clockOut, hours \\
 \textcolor{midgray}{\small Note: Fields marked FK are stored as foreign key IDs in the database.
 Spring Data JPA maps them to full Java objects at the application layer.}
 
+\newpage
+
+% ── 5. APPLICATION LAYER DESIGN ─────────────────────────────────────────────
+\section{Application Layer Design}
+
+\subsection{Data Transfer Objects (DTOs)}
+
+DTOs decouple the API contract from the database entities. Request DTOs exclude auto-generated
+fields (e.g.\ \texttt{id}, timestamps) and accept foreign keys as plain IDs rather than full
+objects. Response DTOs include the generated \texttt{id} so the client can use it in subsequent
+requests.
+
+\subsubsection*{Request DTOs}
+
+\begin{longtable}{>{\bfseries\ttfamily}p{5.2cm} p{8cm}}
+\toprule
+\headerrow Class & Fields \\
+\midrule
+\endhead
+\rowcolor{lightgray} LoginRequest & userName, password \\
+CreateUserRequest & name, userName, password \\
+\rowcolor{lightgray} CreateIngredientRequest & name, costPricePerUnit, unit (Unit enum) \\
+UpdateIngredientRequest & name, costPricePerUnit, unit (Unit enum) \\
+\rowcolor{lightgray} RecipeIngredientRequest & ingredientId (Long), quantity (int) \\
+CreateRecipeRequest & name, procedure, ingredients (List\textless RecipeIngredientRequest\textgreater) \\
+\rowcolor{lightgray} UpdateRecipeRequest & name, procedure, ingredients (List\textless RecipeIngredientRequest\textgreater) \\
+CreateItemRequest & name, price (double), recipeId (Long) \\
+\rowcolor{lightgray} UpdateItemRequest & name, price (double), recipeId (Long) \\
+CreateInventoryRequest & ingredientId (Long), quantity (int), threshold (int) \\
+\rowcolor{lightgray} UpdateInventoryRequest & quantity (int), threshold (int) \\
+ClockInRequest & userId (Long) \\
+\bottomrule
+\end{longtable}
+
+\textcolor{midgray}{\small Note: Clock-out is handled via a \texttt{PATCH} endpoint using the timesheet \texttt{id} with no request body; the server records the current time automatically.}
+
+\vspace{1em}
+
+\subsubsection*{Response DTOs}
+
+\begin{longtable}{>{\bfseries\ttfamily}p{5.2cm} p{8cm}}
+\toprule
+\headerrow Class & Fields \\
+\midrule
+\endhead
+\rowcolor{lightgray} UserResponse & id, name, role (Role enum) \\
+IngredientResponse & id, name, unit (Unit enum) \\
+\rowcolor{lightgray} RecipeIngredientResponse & ingredient (IngredientResponse), quantity (int) \\
+RecipeResponse & id, name, procedure, ingredientInfo (List\textless RecipeIngredientResponse\textgreater) \\
+\rowcolor{lightgray} ItemResponse & id, name, price (double), recipe (RecipeResponse) \\
+InventoryResponse & id, ingredient (IngredientResponse), quantity (int), threshold (int), lowStock (boolean) \\
+\rowcolor{lightgray} TimeSheetResponse & id, user (UserResponse), date, clockIn, clockOut, hoursWorked (double) \\
+\bottomrule
+\end{longtable}
+
+\subsection{Repositories}
+
+All repositories extend \texttt{JpaRepository\textless Entity, Long\textgreater}, providing built-in
+\texttt{save()}, \texttt{findById()}, \texttt{findAll()}, and \texttt{deleteById()} methods.
+Custom query methods are listed below.
+
+\begin{longtable}{>{\bfseries\ttfamily}p{5.2cm} p{8cm}}
+\toprule
+\headerrow Repository & Custom Methods \\
+\midrule
+\endhead
+\rowcolor{lightgray} UserRepository & \texttt{findByUserName(String)} --- used for login authentication \\
+IngredientRepository & none --- base CRUD sufficient \\
+\rowcolor{lightgray} RecipeRepository & none --- base CRUD sufficient \\
+RecipeIngredientRepository & \texttt{findByRecipeId(Long)} --- fetch all ingredients for a recipe \\
+\rowcolor{lightgray} ItemRepository & none --- base CRUD sufficient \\
+InventoryRepository & \texttt{findByIngredientId(Long)} --- look up stock for a specific ingredient \\
+\rowcolor{lightgray} TimeSheetRepository & \texttt{findByUserId(Long)} --- fetch all shift records for an employee \\
+\bottomrule
+\end{longtable}
+
 \vfill
 \textcolor{darkblue}{\rule{\linewidth}{1pt}}
 \textcolor{midgray}{\small Restaurant Management App --- SRS v1.0 --- May 2026}
