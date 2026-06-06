@@ -2,6 +2,7 @@ package com.LittleDelhi.LittleDelhiBackend.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Recipe {
 
     @Id
@@ -21,6 +23,9 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<RecipeIngredient> IngredientQuantityInfo;
+    //is just a JPA convenience. when you fetch a recipe,
+    //JPA runs a query behind the scenes like
+    // SELECT * FROM recipe_ingredient WHERE recipe_id = ? and populates that list for you
 
     private String procedure;
 

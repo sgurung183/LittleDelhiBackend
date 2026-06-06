@@ -1,3 +1,68 @@
+# =============================================================
+# SERVICE LAYER TODO CHECKLIST
+# =============================================================
+#
+# GENERAL RULES FOR EACH SERVICE:
+#   - Annotate with @Service
+#   - Inject repository via constructor (not @Autowired field)
+#   - Map request DTO -> entity before saving
+#   - Map entity -> response DTO before returning
+#   - Throw RuntimeException (or custom exception) if entity not found
+#
+# -------------------------------------------------------------
+# [x] UserService
+#       [x] createUser(CreateUserRequest) -> UserResponse
+#       [x] getAllUsers() -> List<UserResponse>
+#       [x] getUserById(Long id) -> UserResponse
+#       [x] deleteUser(Long id) -> void
+#
+# [ ] AuthService
+#       [ ] login(LoginRequest) -> UserResponse
+#             - findByUserName, verify password, return user
+#
+# [x] IngredientService
+#       [x] createIngredient(CreateIngredientRequest) -> IngredientResponse
+#       [x] getAllIngredients() -> List<IngredientResponse>
+#       [x] getIngredientById(Long id) -> IngredientResponse
+#       [x] updateIngredient(Long id, UpdateIngredientRequest) -> IngredientResponse
+#       [x] deleteIngredient(Long id) -> void
+#
+# [ ] RecipeService
+#       [x] createRecipe(CreateRecipeRequest) -> RecipeResponse
+#             - save Recipe first, then save each RecipeIngredient
+#       [x] getAllRecipes() -> List<RecipeResponse>
+#       [x] getRecipeById(Long id) -> RecipeResponse
+#       [x] updateRecipe(Long id, UpdateRecipeRequest) -> RecipeResponse
+#             - delete old RecipeIngredients, save new ones
+#       [x] deleteRecipe(Long id) -> void
+#
+# [ ] ItemService
+#       [ ] createItem(CreateItemRequest) -> ItemResponse
+#             - look up Recipe by recipeId before saving
+#       [ ] getAllItems() -> List<ItemResponse>
+#       [ ] getItemById(Long id) -> ItemResponse
+#       [ ] updateItem(Long id, UpdateItemRequest) -> ItemResponse
+#       [ ] deleteItem(Long id) -> void
+#
+# [ ] InventoryService
+#       [ ] createInventory(CreateInventoryRequest) -> InventoryResponse
+#             - look up Ingredient by ingredientId before saving
+#       [ ] getAllInventory() -> List<InventoryResponse>
+#       [ ] getInventoryById(Long id) -> InventoryResponse
+#       [ ] updateInventory(Long id, UpdateInventoryRequest) -> InventoryResponse
+#       [ ] getLowStockItems() -> List<InventoryResponse>
+#             - filter where quantity <= threshold, set lowStock = true
+#
+# [ ] TimeSheetService
+#       [ ] clockIn(ClockInRequest) -> TimeSheetResponse
+#             - create entry with current date and clockIn time
+#       [ ] clockOut(Long timesheetId) -> TimeSheetResponse
+#             - set clockOut time, calculate hoursWorked
+#       [ ] getTimesheetsByUser(Long userId) -> List<TimeSheetResponse>
+#       [ ] getAllTimesheets() -> List<TimeSheetResponse>
+#
+# =============================================================
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
