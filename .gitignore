@@ -37,29 +37,29 @@
 #       [x] deleteRecipe(Long id) -> void
 #
 # [ ] ItemService
-#       [ ] createItem(CreateItemRequest) -> ItemResponse
+#       [x] createItem(CreateItemRequest) -> ItemResponse
 #             - look up Recipe by recipeId before saving
-#       [ ] getAllItems() -> List<ItemResponse>
-#       [ ] getItemById(Long id) -> ItemResponse
-#       [ ] updateItem(Long id, UpdateItemRequest) -> ItemResponse
-#       [ ] deleteItem(Long id) -> void
+#       [x] getAllItems() -> List<ItemResponse>
+#       [x] getItemById(Long id) -> ItemResponse
+#       [x] updateItem(Long id, UpdateItemRequest) -> ItemResponse
+#       [x] deleteItem(Long id) -> void
 #
-# [ ] InventoryService
-#       [ ] createInventory(CreateInventoryRequest) -> InventoryResponse
+# [x] InventoryService
+#       [x] createInventory(CreateInventoryRequest) -> InventoryResponse
 #             - look up Ingredient by ingredientId before saving
-#       [ ] getAllInventory() -> List<InventoryResponse>
-#       [ ] getInventoryById(Long id) -> InventoryResponse
-#       [ ] updateInventory(Long id, UpdateInventoryRequest) -> InventoryResponse
-#       [ ] getLowStockItems() -> List<InventoryResponse>
+#       [x] getAllInventory() -> List<InventoryResponse>
+#       [x] getInventoryById(Long id) -> InventoryResponse
+#       [x] updateInventory(Long id, UpdateInventoryRequest) -> InventoryResponse
+#       [x] getLowStockItems() -> List<InventoryResponse>
 #             - filter where quantity <= threshold, set lowStock = true
 #
-# [ ] TimeSheetService
-#       [ ] clockIn(ClockInRequest) -> TimeSheetResponse
+# [x] TimeSheetService
+#       [x] clockIn(ClockInRequest) -> TimeSheetResponse
 #             - create entry with current date and clockIn time
-#       [ ] clockOut(Long timesheetId) -> TimeSheetResponse
+#       [x] clockOut(Long timesheetId) -> TimeSheetResponse
 #             - set clockOut time, calculate hoursWorked
-#       [ ] getTimesheetsByUser(Long userId) -> List<TimeSheetResponse>
-#       [ ] getAllTimesheets() -> List<TimeSheetResponse>
+#       [x] getTimesheetsByUser(Long userId) -> List<TimeSheetResponse>
+#       [x] getAllTimesheets() -> List<TimeSheetResponse>
 #
 # =============================================================
 
@@ -96,3 +96,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Docker ###
+.env
+docker-compose.override.yml

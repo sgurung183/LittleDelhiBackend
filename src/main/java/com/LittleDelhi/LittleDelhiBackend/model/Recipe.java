@@ -21,7 +21,8 @@ public class Recipe {
 
     private String name;
 
-    @OneToMany(mappedBy = "recipe")
+    // cascade = ALL propagates delete to RecipeIngredient rows; orphanRemoval = true cleans up any RecipeIngredient that loses its Recipe owner
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecipeIngredient> IngredientQuantityInfo;
     //is just a JPA convenience. when you fetch a recipe,
     //JPA runs a query behind the scenes like

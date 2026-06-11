@@ -21,7 +21,8 @@ public class Item {
 
     private double price;
 
-    @OneToOne
+    // cascade = ALL propagates delete to Recipe; orphanRemoval = true then deletes the Recipe row if it loses its Item owner
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
